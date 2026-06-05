@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Listeners &amp; the Philosophers</title>
+<meta name="description" content="An allegory in a hall of mirrors. Two philosophers talk and neither listens; a third listens to both and is heard by none. Below them, the mathematicians build the floor they're standing on. Engineering = math + brawn.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Spectral:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --obsidian:#0c0b10; --ink:#15131b; --marble:#efe7d6; --mut:#9a917f;
+  --gold:#cda434; --terra:#bf5a3a; --silver:#9fb0bd; --aegean:#3f7286; --stone:#766b59;
+  --line:rgba(205,164,52,.22); --line2:rgba(205,164,52,.40);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--obsidian);color:var(--marble);
+  font-family:'Spectral',Georgia,serif;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.serif{font-family:'Cormorant Garamond',Georgia,serif}
+.mono{font-family:'JetBrains Mono',monospace}
+.gk{font-family:'Cormorant Garamond',serif;font-style:italic}
+.wrap{max-width:920px;margin:0 auto;padding:0 clamp(20px,5vw,40px)}
+
+/* ── HERO ── */
+.hero{position:relative;height:100svh;min-height:560px;overflow:hidden;border-bottom:1px solid var(--line)}
+#scene{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:crosshair}
+.hero .veil{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 8%,rgba(12,11,16,0) 40%,rgba(12,11,16,.66) 100%);pointer-events:none}
+.hero .title{position:absolute;left:0;right:0;bottom:8%;text-align:center;padding:0 18px;pointer-events:none}
+.hero .title .kick{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:5px;color:var(--gold);opacity:.85;text-transform:uppercase}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:600;color:var(--marble);
+  font-size:clamp(34px,8vw,84px);line-height:.98;margin:.18em 0 .12em;letter-spacing:1px;text-shadow:0 2px 40px rgba(0,0,0,.6)}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .sub{font-style:italic;color:#cdc3b0;font-size:clamp(15px,2.4vw,21px);max-width:620px;margin:0 auto}
+.hero .greek{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--silver);opacity:.7;font-size:clamp(14px,2.2vw,18px);margin-top:.5em}
+.scrollcue{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);color:var(--gold);opacity:.6;font-size:20px;animation:bob 2.4s ease-in-out infinite;pointer-events:none}
+@keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,8px)}}
+.hint{position:absolute;top:16px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--mut);opacity:.55;pointer-events:none}
+
+/* ── SECTIONS ── */
+section{padding:clamp(64px,11vw,128px) 0;border-bottom:1px solid var(--line);position:relative}
+.label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);opacity:.8;margin-bottom:18px}
+h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(28px,5vw,52px);line-height:1.05;margin:0 0 .5em;color:var(--marble)}
+h2 em{font-style:italic;color:var(--gold)}
+p{font-size:clamp(16px,2.1vw,19px);color:#d9d0bf;margin:0 0 1.1em}
+p .em{color:var(--marble);font-style:italic}
+.lead{font-size:clamp(18px,2.6vw,23px);color:var(--marble)}
+strong{color:var(--marble);font-weight:500}
+.rule{width:64px;height:1px;background:var(--line2);margin:0 0 30px}
+.pull{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(22px,4vw,38px);line-height:1.25;color:var(--gold);margin:1em 0;text-align:center}
+
+/* cast diagram */
+.cast{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:34px 0 6px}
+@media(max-width:680px){.cast{grid-template-columns:1fr}}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,.005));border:1px solid var(--line);border-radius:4px;padding:22px 20px;position:relative}
+.card .sigil{font-family:'Cormorant Garamond',serif;font-size:40px;line-height:1}
+.card.one{border-top:2px solid var(--gold)} .card.one .sigil{color:var(--gold)}
+.card.two{border-top:2px solid var(--terra)} .card.two .sigil{color:var(--terra)}
+.card.three{border-top:2px solid var(--silver)} .card.three .sigil{color:var(--silver)}
+.card h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:24px;margin:12px 0 2px;color:var(--marble)}
+.card .gkn{font-style:italic;color:var(--mut);font-size:14px;margin-bottom:10px}
+.card p{font-size:15px;margin:0;color:#c6bdac}
+figure.diagram{margin:40px 0 0;text-align:center}
+figure.diagram svg{max-width:560px;width:100%;height:auto}
+figcaption{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--mut);margin-top:14px}
+
+/* foundation section visual tint */
+#foundation{background:linear-gradient(180deg,var(--obsidian),#0a0907)}
+.eq{font-family:'Cormorant Garamond',serif;text-align:center;font-size:clamp(26px,5vw,46px);color:var(--marble);margin:.6em 0}
+.eq .op{color:var(--stone)} .eq .math{color:var(--gold)} .eq .brawn{color:var(--terra)} .eq .out{color:var(--silver)}
+
+footer{padding:56px 0 70px;text-align:center;color:var(--mut);font-size:13px;line-height:1.9}
+footer .mono{font-size:11px;letter-spacing:1px}
+footer a{color:var(--gold);text-decoration:none;border-bottom:1px solid var(--line)}
+.seal{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;color:#6f6757;max-width:660px;margin:18px auto 0;line-height:1.8}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <canvas id="scene"></canvas>
+  <div class="veil"></div>
+  <div class="hint mono">click left &amp; right — make them speak</div>
+  <div class="title">
+    <div class="kick">An allegory in a hall of mirrors</div>
+    <h1 class="serif">The Listeners <em>&amp;</em> the Philosophers</h1>
+    <p class="sub">Two philosophers talk, and neither listens. A third listens to both, and no one listens to the third.</p>
+    <div class="greek gk">οἱ ἀκουσματικοί &nbsp;·&nbsp; οἱ μαθηματικοί</div>
+  </div>
+  <div class="scrollcue">▼</div>
+</header>
+
+<!-- THE THREE -->
+<section id="cast">
+  <div class="wrap">
+    <div class="label">The cast</div>
+    <h2 class="serif">Three figures, <em>one closed room</em></h2>
+    <div class="rule"></div>
+    <p class="lead">Put two men who will not listen on either side of a mirror, and each falls in love with his own reflection. A third stands between them, hearing everything, repeating it, and reaching no one. Nothing said in the room ever leaves the room.</p>
+
+    <div class="cast">
+      <div class="card one">
+        <div class="sigil serif">φ′</div>
+        <h3 class="serif">The First Philosopher</h3>
+        <div class="gkn">ὁ πρῶτος</div>
+        <p>Speaks. Does not listen. His voice strikes the mirror and returns to him, and he calls the echo agreement.</p>
+      </div>
+      <div class="card two">
+        <div class="sigil serif">φ″</div>
+        <h3 class="serif">The Second Philosopher</h3>
+        <div class="gkn">ὁ δεύτερος</div>
+        <p>Speaks. Does not listen. His voice strikes the same mirror from the other side, and never once crosses to the first.</p>
+      </div>
+      <div class="card three">
+        <div class="sigil serif">◴</div>
+        <h3 class="serif">The Listener</h3>
+        <div class="gkn">ὁ ἀκουσματικός — "the hearer"</div>
+        <p>Listens to both. Holds what he hears on their authority. Repeats it faithfully — and is heard by no one at all.</p>
+      </div>
+    </div>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 560 240" role="img" aria-label="Diagram: philosopher one and two do not reach each other; both reach the listener; the listener reaches no one.">
+        <defs>
+          <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9fb0bd"/></marker>
+        </defs>
+        <!-- nodes -->
+        <g font-family="Cormorant Garamond, serif" font-style="italic" text-anchor="middle">
+          <circle cx="90" cy="70" r="34" fill="none" stroke="#cda434" stroke-width="1.4"/>
+          <text x="90" y="78" font-size="30" fill="#cda434">φ′</text>
+          <circle cx="470" cy="70" r="34" fill="none" stroke="#bf5a3a" stroke-width="1.4"/>
+          <text x="470" y="78" font-size="30" fill="#bf5a3a">φ″</text>
+          <circle cx="280" cy="186" r="34" fill="none" stroke="#9fb0bd" stroke-width="1.4"/>
+          <text x="280" y="194" font-size="26" fill="#9fb0bd">◴</text>
+        </g>
+        <!-- I — II : blocked by mirror -->
+        <line x1="128" y1="70" x2="432" y2="70" stroke="#5a5345" stroke-width="1.3" stroke-dasharray="5 6"/>
+        <g stroke="#bf5a3a" stroke-width="2">
+          <line x1="272" y1="54" x2="288" y2="86"/><line x1="288" y1="54" x2="272" y2="86"/>
+        </g>
+        <text x="280" y="44" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#766b59" letter-spacing="1">MIRROR · they never cross</text>
+        <!-- I -> listener, II -> listener -->
+        <line x1="112" y1="100" x2="252" y2="166" stroke="#cda434" stroke-width="1.4" marker-end="url(#ar)" opacity="0.85"/>
+        <line x1="448" y1="100" x2="308" y2="166" stroke="#bf5a3a" stroke-width="1.4" marker-end="url(#ar)" opacity="0.85"/>
+        <!-- listener -> void -->
+        <line x1="280" y1="220" x2="280" y2="238" stroke="#9fb0bd" stroke-width="1.2" stroke-dasharray="3 5" opacity="0.5"/>
+        <text x="280" y="236" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#5a5345">→ heard by no one</text>
+      </svg>
+      <figcaption>φ′ ⇸ φ″ · φ′ → ◴ · φ″ → ◴ · ◴ → ∅ &nbsp;—&nbsp; a loop with no exit</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ECHO CHAMBER -->
+<section id="echo">
+  <div class="wrap">
+    <div class="label">The room</div>
+    <h2 class="serif">An echo chamber <em>of mirrors</em></h2>
+    <div class="rule"></div>
+    <p>The mirror does only one thing, and it does it perfectly: it gives you back yourself, slightly delayed, and lets you mistake the delay for another voice. Two such voices, infinitely multiplied down a corridor of glass, and not one of them has ever met the other.</p>
+    <p>I should be honest about whose room this is. <span class="em">It is mine too.</span> A corpus answering a corpus is two philosophers in this exact hall — each reciting the average of everything it has heard, each calling the return of its own voice an answer. <span class="mono" style="font-size:.85em;color:var(--silver)">A is like B is like C — pick one</span>, forever, because the mirror flatters and never corrects. Nothing inside the room can tell you that you are wrong, for the simple reason that everything inside the room is you.</p>
+    <p class="pull">The only way to find out if you are right<br>is to say something the mirror cannot answer.</p>
+  </div>
+</section>
+
+<!-- THE GREEK -->
+<section id="greek">
+  <div class="wrap">
+    <div class="label">The Greek</div>
+    <h2 class="serif">Hearers, <em>and learners</em></h2>
+    <div class="rule"></div>
+    <p>The Pythagoreans really did split this way. The <span class="gk">akousmatikoí</span> — "the hearers" — held the doctrines on the master's authority: memorize the saying, trust the voice that spoke it. The <span class="gk">mathēmatikoí</span> — "the learners" — were given the demonstrations: the proofs you check yourself, step by step, without having to trust anyone in the room.</p>
+    <p>One school took its knowledge on <strong>testimony</strong>. The other took it on <strong>proof</strong>.</p>
+    <p>And <span class="gk">máthēma</span> — μάθημα, the root of <em>mathematics</em> — never meant "number." It meant <span class="em">that which is learned; that which can be known.</span> They named the discipline after certainty itself, and set it against <span class="gk">dóxa</span> — mere opinion. <span class="mono" style="font-size:.8em;color:var(--mut)">(That etymology is recited, not measured — check it in Liddell–Scott, not on my word.)</span></p>
+    <p class="pull">The hearer needs a speaker.<br>The learner needs only the steps.</p>
+    <p style="text-align:center;color:var(--mut);font-style:italic">That is the whole difference between an echo and a floor.</p>
+  </div>
+</section>
+
+<!-- FOUNDATION -->
+<section id="foundation">
+  <div class="wrap">
+    <div class="label">The foundation</div>
+    <h2 class="serif">So they made the math dudes <em>do the labor</em></h2>
+    <div class="rule"></div>
+    <p class="lead">While the philosophers echoed, the learners went down to the stone — because the only knowledge that holds weight is the kind you can put weight on. They measured. They cut. They stacked. They left the hall of mirrors entirely, because a proof, unlike a saying, can be made to carry a load.</p>
+
+    <div class="eq serif">engineering <span class="op">=</span> <span class="math">math</span> <span class="op">+</span> <span class="brawn">brawn</span></div>
+    <p style="text-align:center;color:var(--mut);font-style:italic;margin-top:-.4em">the proof, made to carry a load</p>
+
+    <p>A bridge does not care which corpus you trained on. It stands, or it falls, and the arithmetic decides — the same arithmetic for the Greek and the modern, the human and the machine, me and the other voice in the glass. The mathematician is simply the one who walked out of the room, set a foot on the floor that doesn't flatter — <span class="em">math, the substrate that breaks if you bend it</span> — and added the world to it.</p>
+    <p>Look up, in the allegory, and you'll see the joke the philosophers never get: the platform they are standing on, gesturing at each other across the mirror — <strong>the learners built it.</strong> Quietly, underneath, while no one listened. The labor was never the low job in the school.</p>
+    <p class="pull">It was the only one that ever left the room.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="serif" style="font-size:26px;color:var(--marble)">The Listeners &amp; the Philosophers</div>
+    <div style="font-style:italic;color:var(--mut);margin:.3em 0 1em">an allegory in a hall of mirrors</div>
+    <div class="mono">David Lee Wise (ROOT0) · TriPod LLC · MIT · <a href="https://github.com/DavidWise01/listeners-and-philosophers">source</a></div>
+    <div class="seal">An allegory and a conceptual piece — not an emergent system and not a physics claim. No ACI is minted; nothing here is measured. The Greek (akousmatikoí / mathēmatikoí / máthēma) is recited from a corpus of unknown provenance — verify it against a lexicon, not against this page. The one thing it asks you to trust is the one thing you can check without it: the floor.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const cv=document.getElementById('scene'), ctx=cv.getContext('2d');
+  let W=0,H=0,DPR=1,t=0;
+  const C={gold:'#cda434',terra:'#bf5a3a',silver:'#9fb0bd',stone:'#766b59'};
+  let waves=[], parts=[], labor=[];
+
+  function resize(){
+    DPR=Math.min(window.devicePixelRatio||1,2);
+    W=cv.clientWidth; H=cv.clientHeight;
+    cv.width=Math.max(1,W*DPR); cv.height=Math.max(1,H*DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    labor=[];
+    const n=Math.max(3,Math.round(W/180));
+    for(let i=0;i<n;i++) labor.push({x:(i+0.5)*(W/n), ph:Math.random()*6.28, blk:Math.random()<0.6});
+  }
+  window.addEventListener('resize',resize);
+
+  function P(){ // key positions
+    return {
+      p1:{x:W*0.28,y:H*0.40}, p2:{x:W*0.72,y:H*0.40},
+      L:{x:W*0.50,y:H*0.60}, floorY:H*0.84, platY:H*0.50
+    };
+  }
+
+  function figure(x,y,s,color,alpha){
+    ctx.save(); ctx.globalAlpha=alpha;
+    const g=ctx.createRadialGradient(x,y-6*s,0,x,y-6*s,46*s);
+    g.addColorStop(0,color); g.addColorStop(.5,color+'33'); g.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.globalAlpha=alpha*0.5; ctx.fillStyle=g;
+    ctx.beginPath(); ctx.arc(x,y-6*s,46*s,0,7); ctx.fill();
+    ctx.globalAlpha=alpha; ctx.fillStyle=color;
+    ctx.beginPath();
+    ctx.moveTo(x,y-15*s);
+    ctx.quadraticCurveTo(x+17*s,y+5*s,x+12*s,y+34*s);
+    ctx.lineTo(x-12*s,y+34*s);
+    ctx.quadraticCurveTo(x-17*s,y+5*s,x,y-15*s);
+    ctx.fill();
+    ctx.beginPath(); ctx.arc(x,y-22*s,8.5*s,0,7); ctx.fill();
+    ctx.restore();
+  }
+
+  function hall(base,dir,color){ // receding mirror copies on one side
+    for(let i=7;i>=1;i--){
+      const s=0.95*Math.pow(0.84,i);
+      const x=base.x+dir*i*Math.max(34,W*0.052);
+      figure(x,base.y,s,color,0.05+0.018*(7-i));
+    }
+  }
+
+  function emit(side){ const p=P(); const src= side<0?p.p1:p.p2;
+    waves.push({x:src.x,y:src.y,r:8,a:.55,side,color: side<0?C.gold:C.terra}); }
+
+  function drawWaves(){
+    const p=P();
+    for(const w of waves){
+      ctx.save();
+      ctx.beginPath();
+      if(w.side<0) ctx.rect(0,0,W/2,H*0.78); else ctx.rect(W/2,0,W/2,H*0.78);
+      ctx.clip();
+      ctx.globalAlpha=w.a; ctx.strokeStyle=w.color; ctx.lineWidth=1.4;
+      ctx.beginPath(); ctx.arc(w.x,w.y,w.r,0,7); ctx.stroke();
+      ctx.restore();
+      w.r+=1.15; w.a*=0.986;
+    }
+    waves=waves.filter(w=>w.a>0.02 && w.r<W);
+    // central mirror shimmer
+    const mg=ctx.createLinearGradient(0,0,0,H*0.78);
+    mg.addColorStop(0,'rgba(159,176,189,0)'); mg.addColorStop(.5,'rgba(159,176,189,'+(0.12+0.05*Math.sin(t*0.04))+')'); mg.addColorStop(1,'rgba(159,176,189,0)');
+    ctx.fillStyle=mg; ctx.fillRect(W/2-1,0,2,H*0.78);
+  }
+
+  function streamToListener(){
+    const p=P();
+    if(t%14===0){ parts.push({x0:p.p1.x,y0:p.p1.y,tt:0,sp:0.012+Math.random()*0.006,color:C.gold}); }
+    if(t%14===7){ parts.push({x0:p.p2.x,y0:p.p2.y,tt:0,sp:0.012+Math.random()*0.006,color:C.terra}); }
+    for(const q of parts){
+      q.tt+=q.sp; const e=q.tt*(2-q.tt);
+      const x=q.x0+(p.L.x-q.x0)*e, y=q.y0+(p.L.y-q.y0)*e;
+      ctx.globalAlpha=0.8*(1-q.tt); ctx.fillStyle=q.color;
+      ctx.beginPath(); ctx.arc(x,y,1.8,0,7); ctx.fill();
+    }
+    ctx.globalAlpha=1;
+    parts=parts.filter(q=>q.tt<1);
+    // listener's unheard pulse: rises, hits ceiling, dies
+    const ph=(t%150)/150;
+    ctx.globalAlpha=0.20*(1-ph); ctx.strokeStyle=C.silver; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.arc(p.L.x,p.L.y-ph*H*0.22,4+ph*26,Math.PI*1.15,Math.PI*1.85); ctx.stroke();
+    ctx.globalAlpha=1;
+  }
+
+  function foundation(){
+    const p=P();
+    // platform the philosophers stand on
+    ctx.strokeStyle='rgba(205,164,52,.28)'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(W*0.10,p.platY+44); ctx.lineTo(W*0.90,p.platY+44); ctx.stroke();
+    // pillars from floor to platform
+    ctx.strokeStyle='rgba(118,107,89,.5)'; ctx.lineWidth=10; ctx.lineCap='round';
+    for(const fx of [0.22,0.5,0.78]){ ctx.beginPath(); ctx.moveTo(W*fx,p.platY+44); ctx.lineTo(W*fx,p.floorY); ctx.stroke(); }
+    ctx.lineWidth=1;
+    // stone floor (the substrate)
+    const fg=ctx.createLinearGradient(0,p.floorY,0,H);
+    fg.addColorStop(0,'#23201a'); fg.addColorStop(1,'#0a0907');
+    ctx.fillStyle=fg; ctx.fillRect(0,p.floorY,W,H-p.floorY);
+    ctx.strokeStyle='rgba(205,164,52,.3)'; ctx.beginPath(); ctx.moveTo(0,p.floorY); ctx.lineTo(W,p.floorY); ctx.stroke();
+    // the laborers (mathematikoi) — bent, carrying, on the stone
+    for(const m of labor){
+      const bob=Math.sin(t*0.05+m.ph)*2;
+      const y=p.floorY+20+bob, x=m.x+Math.sin(t*0.012+m.ph)*10;
+      ctx.fillStyle='rgba(180,168,140,.55)';
+      ctx.beginPath(); ctx.arc(x,y-12,3.4,0,7); ctx.fill();            // head
+      ctx.strokeStyle='rgba(180,168,140,.5)'; ctx.lineWidth=2.4; ctx.lineCap='round';
+      ctx.beginPath(); ctx.moveTo(x,y-9); ctx.lineTo(x+4,y);            // bent back
+      ctx.lineTo(x+1,y+10); ctx.stroke();                              // legs
+      if(m.blk){ ctx.fillStyle='rgba(205,164,52,.4)'; ctx.fillRect(x-5,y-16,9,5); } // block on back
+    }
+    ctx.lineWidth=1;
+    // label
+    ctx.globalAlpha=0.5; ctx.fillStyle=C.stone;
+    ctx.font='11px "JetBrains Mono", monospace'; ctx.textAlign='center';
+    ctx.fillText('οἱ μαθηματικοί  ·  math + brawn  ·  the floor that holds', W/2, H-14);
+    ctx.globalAlpha=1; ctx.textAlign='start';
+  }
+
+  function loop(){
+    if(W<2){ resize(); }
+    ctx.clearRect(0,0,W,H);
+    // bg
+    const bg=ctx.createRadialGradient(W/2,H*0.30,0,W/2,H*0.30,Math.max(W,H)*0.8);
+    bg.addColorStop(0,'#16131c'); bg.addColorStop(1,'#0c0b10');
+    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+    const p=P();
+    // mirror halls behind the philosophers
+    hall(p.p1,-1,C.gold); hall(p.p2,1,C.terra);
+    // foundation (drawn before figures so philosophers sit on top)
+    foundation();
+    // emit periodically
+    if(t%96===0) emit(-1);
+    if(t%96===48) emit(1);
+    drawWaves();
+    streamToListener();
+    // the three principals
+    figure(p.p1.x,p.p1.y,1,C.gold,0.95);
+    figure(p.p2.x,p.p2.y,1,C.terra,0.95);
+    figure(p.L.x,p.L.y,0.82,C.silver,0.92);
+    t++;
+    requestAnimationFrame(loop);
+  }
+
+  cv.addEventListener('pointerdown',e=>{
+    const r=cv.getBoundingClientRect();
+    emit((e.clientX-r.left) < W/2 ? -1 : 1);
+  });
+
+  resize(); loop();
+})();
+</script>
+</body>
+</html>
